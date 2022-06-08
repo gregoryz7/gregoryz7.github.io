@@ -402,7 +402,7 @@ let bunny;
 
 const renderer = new THREE.WebGLRenderer({canvas});
 
-const camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 0.1, 1000);
 camera.position.set(0, 0, 30);
 
 const scene = new THREE.Scene();
