@@ -398,69 +398,6 @@ function saveSetting(setting, value) {
   window.localStorage.setItem(setting, JSON.stringify(value));
 }
 
-function resizeRendererToDisplaySize(renderer) {
-  const canvas = renderer.domElement;
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  const needResize = canvas.width !== width || canvas.height !== height;
-  if (needResize) {
-    renderer.setSize(width, height, false);
-  }
-  return needResize;
-}
-function roundUp(numToRound, multiple)
-{
-    var value = multiple;
-    while(value < numToRound) {
-      value = value * multiple;
-    }
-    return value;
-}
-
-function addText(text, fontSize) {
-  
-  // 2d duty
-  context.font = fontSize + "px Arial";
- 
-  
-  metrics = context.measureText(text);
-  console.log(metrics);
-  
-  var textWidth = roundUp(metrics.width+20.0, 2);
-  var textHeight = roundUp(fontSize+10.0, 2);
-    
-  canvas.width = textWidth;
-  canvas.height = textHeight;
-  
-  context.font = "bold " + fontSize + "px Arial";
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-  context.fillStyle = "#ff0000";
-  context.fillText(text, textWidth / 2, textHeight / 2);
-
-  var texture = new THREE.Texture(canvas);
-  texture.needsUpdate = true;
-  
-  var material = new THREE.MeshBasicMaterial({
-    map: texture,
-    transparent: true,
-    side: THREE.DoubleSide
-    //color: 0xffffff,
-    //useScreenCoordinates: false
-  });
-  
-  console.log("textw: " + textWidth, "texth: " + textHeight);
-  
-
-  
-  mesh = new THREE.Mesh(new THREE.PlaneGeometry(textWidth/60, textHeight/60, 10, 10), material);
-      
-  mesh.position.y = 5;
-  mesh.position.z = 5;
-  mesh.position.x = 0;
-  
-  return mesh;
-}
 let bunny;
 
 const renderer = new THREE.WebGLRenderer({canvas});
@@ -487,9 +424,7 @@ scene.background = new THREE.Color('black');
   scene.add(light);
   scene.add(light.target);
 }
-text = addText("it really works!!", 50);
-  
-scene.add(text);
+
 {
   const objLoader = new OBJLoader();
   objLoader.load('assets/bunny.obj', (root) => {
@@ -498,6 +433,16 @@ scene.add(text);
   });
 }
 
+function resizeRendererToDisplaySize(renderer) {
+  const canvas = renderer.domElement;
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  const needResize = canvas.width !== width || canvas.height !== height;
+  if (needResize) {
+    renderer.setSize(width, height, false);
+  }
+  return needResize;
+}
 
 async function render() {
   if (resizeRendererToDisplaySize(renderer)) {
